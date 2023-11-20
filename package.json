@@ -24,6 +24,7 @@
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
     "@types/multer-s3": "^3.0.3",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "file-type": "^18.7.0",

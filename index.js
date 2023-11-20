@@ -3,8 +3,12 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { config } from "dotenv";
 import multer from "multer";
 import generateUniqueId from "generate-unique-id";
+import cors from "cors";
+
+
 
 const app = express();
+app.use(cors());
 
 config();
 
@@ -35,14 +39,14 @@ export const main = async (buffer, type) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.post("/test-upload", upload.single("file"), async (req, res) => {
+app.post("/test-upload", upload.single("cv"), async (req, res) => {
   console.log(req.file);
   const response = await main(req.file.buffer, req.file.mimetype);
 
   res.send(response);
 });
 
-app.get("/test-download",)
+app.get("/test-download");
 
 app.listen(9000);
 console.log("Server up and running...");
