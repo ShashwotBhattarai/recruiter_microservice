@@ -5,8 +5,6 @@ import multer from "multer";
 import generateUniqueId from "generate-unique-id";
 import cors from "cors";
 
-
-
 const app = express();
 app.use(cors());
 
