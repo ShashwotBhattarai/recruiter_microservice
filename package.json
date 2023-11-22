@@ -2,10 +2,10 @@
   "name": "uploader_microservice_s3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "ts-node index.ts",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "npm run start"
   },
@@ -22,16 +22,20 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.456.0",
     "@types/aws-sdk": "^2.7.0",
     "@types/multer-s3": "^3.0.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "file-type": "^18.7.0",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.1",
     "generate-unique-id": "^2.0.3",
     "multer-s3": "^3.0.1",
     "multiparty": "^4.2.3",
     "nodemon": "^3.0.1",
+    "stream": "^0.0.2",
     "ts-node": "^10.9.1"
   },
   "type": "module"
