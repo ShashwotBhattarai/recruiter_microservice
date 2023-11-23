@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const s3_fileDownload_service_1 = __importDefault(require("../services/s3-fileDownload.service"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = express_1.default.Router();
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("ima inside fiel download");
+router.get("/", (0, auth_middleware_1.authMiddleware)(["recruiter"]), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const key = req.body.key;
     const downloadFileResponse = yield new s3_fileDownload_service_1.default().downloadFileToS3(key);
     if (downloadFileResponse.status == 200) {
