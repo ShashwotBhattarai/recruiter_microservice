@@ -11,8 +11,10 @@ const getCandidateInfo_route_1 = __importDefault(require("./routes/getCandidateI
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+const port = 6000;
 (0, db_connect_1.default)();
 app.use("/test-download", fileDownload_route_1.default);
 app.use("/getCandidateInfo", getCandidateInfo_route_1.default);
-app.listen(9000);
-console.log("server up ...");
+app.listen(port, () => {
+    console.log(`Recruiter Microservice Running at port ${port}`);
+});
