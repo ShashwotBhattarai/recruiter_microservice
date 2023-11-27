@@ -4,43 +4,34 @@ import { CandidateInfo } from "../database/models/candidateInfo.model";
 
 const router: Router = express.Router();
 
-router.get(
-  "/all",
-  authMiddleware(["recruiter"]),
-  async (req: Request, res: Response) => {
-    try {
-      let candidates = await CandidateInfo.find();
-      if (candidates == null) {
-        res.status(404).json({ message: "No candidates found" });
-      } else {
-        res.status(200).send(candidates);
-      }
-    } catch (error) {
-      res.send(500).json({ error: error });
-    }
-  }
-);
+router.get("/all", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
+	console.log("get all called");
+	try {
+		let candidates = await CandidateInfo.find();
+		if (candidates == null) {
+			res.status(404).json({ message: "No candidates found" });
+		} else {
+			res.status(200).send(candidates);
+		}
+	} catch (error) {
+		res.send(500).json({ error: error });
+	}
+});
 
-router.get(
-  "/:user_id",
-  authMiddleware(["recruiter"]),
-  async (req: Request, res: Response) => {
-    try {
-      let candidate = await CandidateInfo.findOne({
-        user_id: req.params.user_id,
-      });
+router.get("/:user_id", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
+	try {
+		let candidate = await CandidateInfo.findOne({
+			user_id: req.params.user_id,
+		});
 
-      if (candidate == null) {
-        res
-          .status(404)
-          .json({ message: "candidatre with that user_id not found" });
-      } else {
-        res.status(200).send(candidate);
-      }
-    } catch (error) {
-      res.status(500).send({ error: error });
-    }
-  }
-);
+		if (candidate == null) {
+			res.status(404).json({ message: "candidatre with that user_id not found" });
+		} else {
+			res.status(200).send(candidate);
+		}
+	} catch (error) {
+		res.status(500).send({ error: error });
+	}
+});
 
 export default router;

@@ -6,7 +6,7 @@ import { FindUser } from "../services/findUserFromS3Key.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
 const router = express.Router();
 
-router.get("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
+router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
 	// const token = req.headers.authorization?.slice(7);
 	const key = req.body.key;
 

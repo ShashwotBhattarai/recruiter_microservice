@@ -2,27 +2,30 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export function authMiddleware(allowedRoles: Array<string>) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.slice(7);
+	
+	return (req: Request, res: Response, next: NextFunction) => {
 
-    if (!token) {
-      return res.status(401).json({ message: "Access token is missing" });
-    }
+    console.log("auth called");
+		const token = req.headers.authorization?.slice(7);
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWTSECRET as string) as {
-        role: string;
-      };
+		if (!token) {
+			return res.status(401).json({ message: "Access token is missing" });
+		}
 
-      const userRole = decoded.role;
+		try {
+			const decoded = jwt.verify(token, process.env.JWTSECRET as string) as {
+				role: string;
+			};
 
-      if (!allowedRoles.includes(userRole)) {
-        return res.status(403).json({ message: "Access denied" });
-      } else {
-        next();
-      }
-    } catch (error) {
-      return res.status(401).json({ message: error });
-    }
-  };
+			const userRole = decoded.role;
+
+			if (!allowedRoles.includes(userRole)) {
+				return res.status(403).json({ message: "Access denied" });
+			} else {
+				next();
+			}
+		} catch (error) {
+			return res.status(401).json({ message: error });
+		}
+	};
 }
