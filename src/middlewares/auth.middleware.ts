@@ -2,10 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export function authMiddleware(allowedRoles: Array<string>) {
-	
 	return (req: Request, res: Response, next: NextFunction) => {
-
-    console.log("auth called");
 		const token = req.headers.authorization?.slice(7);
 
 		if (!token) {

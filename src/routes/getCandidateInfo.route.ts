@@ -5,7 +5,6 @@ import { CandidateInfo } from "../database/models/candidateInfo.model";
 const router: Router = express.Router();
 
 router.get("/all", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
-	console.log("get all called");
 	try {
 		let candidates = await CandidateInfo.find();
 		if (candidates == null) {
