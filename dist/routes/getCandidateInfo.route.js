@@ -36,9 +36,7 @@ router.get("/:user_id", (0, auth_middleware_1.authMiddleware)(["recruiter"]), (r
             user_id: req.params.user_id,
         });
         if (candidate == null) {
-            res
-                .status(404)
-                .json({ message: "candidatre with that user_id not found" });
+            res.status(404).json({ message: "candidatre with that user_id not found" });
         }
         else {
             res.status(200).send(candidate);
