@@ -13,8 +13,8 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const port = 3002;
 (0, db_connect_1.default)();
-app.use("/test-download", fileDownload_route_1.default);
-app.use("/getCandidateInfo", getCandidateInfo_route_1.default);
+app.use("/recruiter/download", fileDownload_route_1.default);
+app.use("/recruiter/getCandidateInfo", getCandidateInfo_route_1.default);
 app.listen(port, () => {
     console.log(`Recruiter Microservice Running at port ${port}`);
 });

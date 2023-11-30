@@ -11,8 +11,8 @@ const port = 3002;
 
 connectToDatabase();
 
-app.use("/test-download", fileDownloadRoute);
-app.use("/getCandidateInfo", getCandidateInfoRoute);
+app.use("/recruiter/download", fileDownloadRoute);
+app.use("/recruiter/getCandidateInfo", getCandidateInfoRoute);
 
 app.listen(port, () => {
 	console.log(`Recruiter Microservice Running at port ${port}`);
