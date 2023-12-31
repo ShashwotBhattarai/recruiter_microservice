@@ -1,39 +1,36 @@
 import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
+import { mockClient } from "aws-sdk-client-mock";
+import { S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
-jest.mock("@aws-sdk/client-s3", () => ({
-	GetObjectCommand: jest.fn(),
+jest.mock("@aws-sdk/s3-request-presigner", () => ({
+	getSignedUrl: jest.fn().mockResolvedValue("signedUrl"),
 }));
-
-jest.mock("@aws-sdk/s3-request-presigner");
-
 describe("downloadFileFromS3", () => {
-	const mockClient = {}; // Mock client object
+	let s3ClientMock;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		s3ClientMock = mockClient(S3Client);
 	});
 
-	test("successfully downloads file from S3", async () => {
-		(getSignedUrl as jest.MockedFunction<typeof getSignedUrl>).mockResolvedValue(
-			"https://s3.amazonaws.com/resumetrackerbucket/file.pdf"
+	test("should return a signed url", async () => {
+		const response = await downloadFileFromS3("testKey");
+		expect(getSignedUrl).toHaveBeenCalledWith(
+			expect.any(S3Client),
+			expect.anything(), // You can be more specific here if needed
+			{ expiresIn: 60 } // Match this with your actual function's logic
 		);
-
-		const result = await downloadFileFromS3("file.pdf", mockClient);
-
-		expect(result.status).toBe(200);
-		expect(result.message).toBe("url downloaded");
-		expect(result.data).toBe("https://s3.amazonaws.com/resumetrackerbucket/file.pdf");
+		expect(response.status).toBe(200);
+		expect(response.data).toBe("signedUrl");
 	});
+	test("should handle errors when generating a signed URL", async () => {
+		const mockError = new Error("Failed to generate signed URL");
+		(getSignedUrl as jest.Mock).mockRejectedValue(mockError);
 
-	test("handles S3 error", async () => {
-		(getSignedUrl as jest.MockedFunction<typeof getSignedUrl>).mockRejectedValue(
-			new Error("Failed to get object")
-		);
+		const response = await downloadFileFromS3("testKey");
 
-		const result = await downloadFileFromS3("file.pdf", mockClient);
-
-		expect(result.status).toBe(500);
-		expect(result.message).toBeDefined();
+		expect(getSignedUrl).toHaveBeenCalledWith(expect.any(S3Client), expect.anything(), { expiresIn: 60 });
+		expect(response).toEqual({ status: 500, message: mockError });
 	});
+	// Additional tests...
 });

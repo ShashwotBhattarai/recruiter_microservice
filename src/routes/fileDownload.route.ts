@@ -10,8 +10,7 @@ const router = express.Router();
 router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
 	// const token = req.headers.authorization?.slice(7);
 	const key = req.body.key;
-	const s3Client = await createSQSClient();
-	const downloadFileResponse = await downloadFileFromS3(key, s3Client);
+	const downloadFileResponse = await downloadFileFromS3(key);
 
 	if (downloadFileResponse.status == 200) {
 		const findUserResponse = await new FindUser().findUser(key);
@@ -24,8 +23,7 @@ router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Respon
 				subject: "Hi " + fullname + " " + " Your CV Got Downloaded",
 				text: "Dear candidate your CV was downloaded",
 			};
-			const sqsClient = await createSQSClient();
-			await new SQS_Service().sendMessageToQueue(emailPayload, sqsClient);
+			await new SQS_Service().sendMessageToQueue(emailPayload);
 		}
 
 		res.setHeader("Content-Disposition", `attachment; filename=${key}.pdf`);
