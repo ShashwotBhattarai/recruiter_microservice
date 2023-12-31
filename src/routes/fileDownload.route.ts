@@ -8,7 +8,6 @@ import { createSQSClient } from "../services/createSQSClient.service";
 const router = express.Router();
 
 router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
-	// const token = req.headers.authorization?.slice(7);
 	const key = req.body.key;
 	const downloadFileResponse = await downloadFileFromS3(key);
 
