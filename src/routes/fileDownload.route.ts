@@ -1,16 +1,17 @@
 import express, { Request, Response } from "express";
-import S3FileDownloadService from "../services/s3-fileDownload.service";
+import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { SQS_Service } from "../services/sqs.service";
 import { FindUser } from "../services/findUserFromS3Key.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
+import { createSQSClient } from "../services/createSQSClient.service";
 const router = express.Router();
 
 router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
 	// const token = req.headers.authorization?.slice(7);
 	const key = req.body.key;
-
-	const downloadFileResponse = await new S3FileDownloadService().downloadFileToS3(key);
+	const s3Client = await createSQSClient();
+	const downloadFileResponse = await downloadFileFromS3(key, s3Client);
 
 	if (downloadFileResponse.status == 200) {
 		const findUserResponse = await new FindUser().findUser(key);
@@ -23,11 +24,12 @@ router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Respon
 				subject: "Hi " + fullname + " " + " Your CV Got Downloaded",
 				text: "Dear candidate your CV was downloaded",
 			};
-			await new SQS_Service().sendMessageToQueue(emailPayload);
+			const sqsClient = await createSQSClient();
+			await new SQS_Service().sendMessageToQueue(emailPayload, sqsClient);
 		}
 
 		res.setHeader("Content-Disposition", `attachment; filename=${key}.pdf`);
-		res.status(downloadFileResponse.status).send({ url: downloadFileResponse.message });
+		res.status(downloadFileResponse.status).send({ url: downloadFileResponse.data });
 	} else {
 		res.status(downloadFileResponse.status).send({ error: downloadFileResponse.message });
 	}
