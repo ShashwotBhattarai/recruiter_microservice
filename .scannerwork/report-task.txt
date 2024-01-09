@@ -1,0 +1,6 @@
+projectKey=recruiter_microservice
+serverUrl=http://localhost:9000
+serverVersion=10.3.0.82913
+dashboardUrl=http://localhost:9000/dashboard?id=recruiter_microservice
+ceTaskId=AYztzvDOyEak48y7xRdT
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYztzvDOyEak48y7xRdT
