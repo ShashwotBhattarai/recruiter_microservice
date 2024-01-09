@@ -4,7 +4,7 @@ import { CandidateInfo } from "../database/models/candidateInfo.model";
 jest.mock("../database/models/candidateInfo.model"); // Mock the CandidateInfo model
 
 describe("FindUser", () => {
-	let findUser: any;
+	let findUser: InstanceType<typeof FindUser>;
 
 	beforeEach(() => {
 		findUser = new FindUser();

@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 router.get("/all", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
 	try {
-		let candidates = await CandidateInfo.find();
+		const candidates = await CandidateInfo.find();
 		if (candidates == null) {
 			res.status(404).json({ message: "No candidates found" });
 		} else {
@@ -19,7 +19,7 @@ router.get("/all", authMiddleware(["recruiter"]), async (req: Request, res: Resp
 
 router.get("/:user_id", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {
 	try {
-		let candidate = await CandidateInfo.findOne({
+		const candidate = await CandidateInfo.findOne({
 			user_id: req.params.user_id,
 		});
 

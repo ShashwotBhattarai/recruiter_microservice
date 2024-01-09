@@ -1,7 +1,12 @@
+jest.mock("generate-unique-id", () => {
+	return {
+		__esModule: true, // This is required for modules with no default export
+		default: jest.fn().mockReturnValue("mocked-unique-id"),
+	};
+});
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { mockClient } from "aws-sdk-client-mock";
 import { SQS_Service } from "../services/sqs.service";
-import generateUniqueId = require("generate-unique-id");
 
 describe("Sqs service", () => {
 	const sqsClientMock = mockClient(SQSClient);
@@ -12,7 +17,6 @@ describe("Sqs service", () => {
 
 	test("sqs message gets sent to queue", async () => {
 		//mock all dependencies
-		const generateUniqueId = jest.fn().mockReturnValue("mocked-unique-id");
 
 		sqsClientMock.on(SendMessageCommand).resolves({
 			$metadata: {
@@ -33,14 +37,13 @@ describe("Sqs service", () => {
 			subject: "new user created",
 			text: "your user has been created",
 		};
-		const result = await new SQS_Service().sendMessageToQueue(emailPayload, sqsClientMock);
+		const result = await new SQS_Service().sendMessageToQueue(emailPayload);
 
 		expect(result.status).toBe(200);
 	});
 
 	test("sqs error occures", async () => {
 		//mock all dependencies
-		const generateUniqueId = jest.fn().mockReturnValue("mocked-unique-id");
 
 		sqsClientMock.on(SendMessageCommand).rejects(new Error("SQS Error"));
 		const emailPayload = {
@@ -48,7 +51,7 @@ describe("Sqs service", () => {
 			subject: "new user created",
 			text: "your user has been created",
 		};
-		const result = await new SQS_Service().sendMessageToQueue(emailPayload, sqsClientMock);
+		const result = await new SQS_Service().sendMessageToQueue(emailPayload);
 
 		expect(result.status).toBe(500);
 	});

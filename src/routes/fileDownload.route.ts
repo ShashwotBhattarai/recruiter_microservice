@@ -4,7 +4,6 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 import { SQS_Service } from "../services/sqs.service";
 import { FindUser } from "../services/findUserFromS3Key.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
-import { createSQSClient } from "../services/createSQSClient.service";
 const router = express.Router();
 
 router.post("/", authMiddleware(["recruiter"]), async (req: Request, res: Response) => {

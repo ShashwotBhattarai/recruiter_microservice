@@ -1,16 +1,12 @@
 import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
-import { mockClient } from "aws-sdk-client-mock";
 import { S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 jest.mock("@aws-sdk/s3-request-presigner", () => ({
 	getSignedUrl: jest.fn().mockResolvedValue("signedUrl"),
 }));
 describe("downloadFileFromS3", () => {
-	let s3ClientMock;
-
 	beforeEach(() => {
 		jest.clearAllMocks();
-		s3ClientMock = mockClient(S3Client);
 	});
 
 	test("should return a signed url", async () => {
