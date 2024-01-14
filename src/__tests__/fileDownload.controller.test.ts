@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { fileDownloadController } from "../controllers/fileDownload.controller";
-import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
-import { SQSService } from "../services/sqs.service";
-import { FindUser } from "../services/findUserFromS3Key.service";
+
 
 jest.mock("../services/s3-fileDownload.service", () => ({
 	downloadFileFromS3: jest.fn(),

@@ -1,8 +1,8 @@
-import express from "express";
+import express, { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { fileDownloadController } from "../controllers/fileDownload.controller";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.post("/", authMiddleware(["recruiter"]), fileDownloadController);
 

@@ -4,8 +4,8 @@ import { SQSService } from "../services/sqs.service";
 import { FindUser } from "../services/findUserFromS3Key.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
 export const fileDownloadController = (req: Request, res: Response) => {
-	const key = req.body.key;
 	(async () => {
+		const key = req.body.key;
 		try {
 			const downloadFileResponse = await downloadFileFromS3(key);
 

@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const fileDownload_route_1 = __importDefault(require("./routes/fileDownload.route"));
 const db_connect_1 = __importDefault(require("./database/db.connect"));
 const getCandidateInfo_route_1 = __importDefault(require("./routes/getCandidateInfo.route"));
@@ -15,6 +16,7 @@ let corsOptions = {
 };
 app.use((0, cors_1.default)(corsOptions));
 const port = 3002;
+app.use(body_parser_1.default.json());
 (0, db_connect_1.default)();
 app.use("/recruiter/download", fileDownload_route_1.default);
 app.use("/recruiter/getCandidateInfo", getCandidateInfo_route_1.default);

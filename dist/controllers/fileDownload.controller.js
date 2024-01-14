@@ -14,8 +14,8 @@ const s3_fileDownload_service_1 = require("../services/s3-fileDownload.service")
 const sqs_service_1 = require("../services/sqs.service");
 const findUserFromS3Key_service_1 = require("../services/findUserFromS3Key.service");
 const fileDownloadController = (req, res) => {
-    const key = req.body.key;
     (() => __awaiter(void 0, void 0, void 0, function* () {
+        const key = req.body.key;
         try {
             const downloadFileResponse = yield (0, s3_fileDownload_service_1.downloadFileFromS3)(key);
             const findUserResponse = yield new findUserFromS3Key_service_1.FindUser().findUser(key);
