@@ -31,7 +31,7 @@ export class SQSService {
 			);
 			return { status: 200, message: "message sent to queue", data: null };
 		} catch (error) {
-			return { status: 500, message: "error in sendMessageToQueue", data: error };
+			throw new Error("error in sendMessageToQueue");
 		}
 	}
 }

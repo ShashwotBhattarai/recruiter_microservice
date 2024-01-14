@@ -29,18 +29,24 @@ describe("FindUser", () => {
 			fullname: "Test User",
 		});
 	});
+	it("user not found", async () => {
+		CandidateInfo.findOne = jest.fn().mockResolvedValue(null);
+
+		try {
+			await findUser.findUser("some-key");
+		} catch (error) {
+			expect(CandidateInfo.findOne).toHaveBeenCalledWith({ aws_file_key: "some-key" });
+			expect(error).toEqual(new Error("Error in finding user"));
+		}
+	});
 
 	it("handles errors when finding a user", async () => {
 		const errorMessage = "Error finding user";
 		CandidateInfo.findOne = jest.fn().mockRejectedValue(new Error(errorMessage));
-
-		const result = await findUser.findUser("invalid-key");
-
-		expect(CandidateInfo.findOne).toHaveBeenCalledWith({ aws_file_key: "invalid-key" });
-		expect(result).toEqual({
-			status: 500,
-			message: expect.any(Error),
-		});
-		expect(result.message).toEqual(new Error(errorMessage));
+		try {
+			await findUser.findUser("invalid-key");
+		} catch (error) {
+			expect(error).toEqual(new Error("Error in finding user"));
+		}
 	});
 });

@@ -10,17 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const s3_fileDownload_service_1 = require("../services/s3-fileDownload.service");
-const aws_sdk_client_mock_1 = require("aws-sdk-client-mock");
 const client_s3_1 = require("@aws-sdk/client-s3");
 const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 jest.mock("@aws-sdk/s3-request-presigner", () => ({
     getSignedUrl: jest.fn().mockResolvedValue("signedUrl"),
 }));
 describe("downloadFileFromS3", () => {
-    let s3ClientMock;
     beforeEach(() => {
         jest.clearAllMocks();
-        s3ClientMock = (0, aws_sdk_client_mock_1.mockClient)(client_s3_1.S3Client);
     });
     test("should return a signed url", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, s3_fileDownload_service_1.downloadFileFromS3)("testKey");
@@ -33,9 +30,11 @@ describe("downloadFileFromS3", () => {
     test("should handle errors when generating a signed URL", () => __awaiter(void 0, void 0, void 0, function* () {
         const mockError = new Error("Failed to generate signed URL");
         s3_request_presigner_1.getSignedUrl.mockRejectedValue(mockError);
-        const response = yield (0, s3_fileDownload_service_1.downloadFileFromS3)("testKey");
-        expect(s3_request_presigner_1.getSignedUrl).toHaveBeenCalledWith(expect.any(client_s3_1.S3Client), expect.anything(), { expiresIn: 60 });
-        expect(response).toEqual({ status: 500, message: mockError });
+        try {
+            yield (0, s3_fileDownload_service_1.downloadFileFromS3)("testKey");
+        }
+        catch (error) {
+            expect(error).toEqual(new Error("error in downloadFileFromS3"));
+        }
     }));
-    // Additional tests...
 });

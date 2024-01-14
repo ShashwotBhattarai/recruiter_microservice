@@ -20,6 +20,6 @@ export async function downloadFileFromS3(key: string) {
 		);
 		return { status: 200, message: "url downloaded", data: imageUrl };
 	} catch (err) {
-		return { status: 500, message: err };
+		throw new Error("error in downloadFileFromS3");
 	}
 }

@@ -29,7 +29,7 @@ function downloadFileFromS3(key) {
             return { status: 200, message: "url downloaded", data: imageUrl };
         }
         catch (err) {
-            return { status: 500, message: err };
+            throw new Error("error in downloadFileFromS3");
         }
     });
 }

@@ -9,30 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindUser = void 0;
+exports.getAllcandidateController = void 0;
 const candidateInfo_model_1 = require("../database/models/candidateInfo.model");
-class FindUser {
-    findUser(key) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const response = yield candidateInfo_model_1.CandidateInfo.findOne({ aws_file_key: key });
-                if (response !== null) {
-                    const email = response.email;
-                    const fullname = response.fullname;
-                    return {
-                        status: 200,
-                        email: email,
-                        fullname: fullname,
-                    };
-                }
-                else {
-                    throw new Error("User not found");
-                }
+const getAllcandidateController = (req, res) => {
+    (() => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const candidates = yield candidateInfo_model_1.CandidateInfo.find();
+            if (candidates == null) {
+                res.status(404).json({ message: "No candidates found" });
             }
-            catch (_a) {
-                throw new Error("Error in finding user");
+            else {
+                res.status(200).send(candidates);
             }
-        });
-    }
-}
-exports.FindUser = FindUser;
+        }
+        catch (error) {
+            res.status(500).json({ error: "internal server error" });
+        }
+    }))();
+};
+exports.getAllcandidateController = getAllcandidateController;

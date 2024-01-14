@@ -51,8 +51,10 @@ describe("Sqs service", () => {
 			subject: "new user created",
 			text: "your user has been created",
 		};
-		const result = await new SQSService().sendMessageToQueue(emailPayload);
-
-		expect(result.status).toBe(500);
+		try {
+			await new SQSService().sendMessageToQueue(emailPayload);
+		} catch (error) {
+			expect(error).toEqual(new Error("error in sendMessageToQueue"));
+		}
 	});
 });

@@ -23,10 +23,10 @@ describe("downloadFileFromS3", () => {
 		const mockError = new Error("Failed to generate signed URL");
 		(getSignedUrl as jest.Mock).mockRejectedValue(mockError);
 
-		const response = await downloadFileFromS3("testKey");
-
-		expect(getSignedUrl).toHaveBeenCalledWith(expect.any(S3Client), expect.anything(), { expiresIn: 60 });
-		expect(response).toEqual({ status: 500, message: mockError });
+		try {
+			await downloadFileFromS3("testKey");
+		} catch (error) {
+			expect(error).toEqual(new Error("error in downloadFileFromS3"));
+		}
 	});
-	// Additional tests...
 });

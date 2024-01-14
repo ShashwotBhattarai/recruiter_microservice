@@ -5,8 +5,11 @@ import connectToDatabase from "./database/db.connect";
 import getCandidateInfoRoute from "./routes/getCandidateInfo.route";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.disable("x-powered-by");
+let corsOptions = {
+	origin: "http://localhost:3000/",
+};
+app.use(cors(corsOptions));
 const port = 3002;
 
 connectToDatabase();

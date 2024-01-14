@@ -9,6 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+jest.mock("generate-unique-id", () => {
+    return {
+        __esModule: true, // This is required for modules with no default export
+        default: jest.fn().mockReturnValue("mocked-unique-id"),
+    };
+});
 const client_sqs_1 = require("@aws-sdk/client-sqs");
 const aws_sdk_client_mock_1 = require("aws-sdk-client-mock");
 const sqs_service_1 = require("../services/sqs.service");
@@ -20,7 +26,6 @@ describe("Sqs service", () => {
     });
     test("sqs message gets sent to queue", () => __awaiter(void 0, void 0, void 0, function* () {
         //mock all dependencies
-        const generateUniqueId = jest.fn().mockReturnValue("mocked-unique-id");
         sqsClientMock.on(client_sqs_1.SendMessageCommand).resolves({
             $metadata: {
                 httpStatusCode: 200,
@@ -40,19 +45,22 @@ describe("Sqs service", () => {
             subject: "new user created",
             text: "your user has been created",
         };
-        const result = yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
+        const result = yield new sqs_service_1.SQSService().sendMessageToQueue(emailPayload);
         expect(result.status).toBe(200);
     }));
     test("sqs error occures", () => __awaiter(void 0, void 0, void 0, function* () {
         //mock all dependencies
-        const generateUniqueId = jest.fn().mockReturnValue("mocked-unique-id");
         sqsClientMock.on(client_sqs_1.SendMessageCommand).rejects(new Error("SQS Error"));
         const emailPayload = {
             to: "babudallay@gmail.com",
             subject: "new user created",
             text: "your user has been created",
         };
-        const result = yield new sqs_service_1.SQS_Service().sendMessageToQueue(emailPayload);
-        expect(result.status).toBe(500);
+        try {
+            yield new sqs_service_1.SQSService().sendMessageToQueue(emailPayload);
+        }
+        catch (error) {
+            expect(error).toEqual(new Error("error in sendMessageToQueue"));
+        }
     }));
 });
