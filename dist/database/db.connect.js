@@ -37,15 +37,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv = __importStar(require("dotenv"));
+const logger_config_1 = __importDefault(require("../configs/logger.config"));
 dotenv.config();
 function connectToDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield mongoose_1.default.connect(process.env.DATABASEURI);
-            console.log("Connected to the database");
+            logger_config_1.default.info("Connected to database successfully");
         }
         catch (error) {
-            console.log(error);
+            logger_config_1.default.error("Unknown error in connecting to database", error);
         }
     });
 }

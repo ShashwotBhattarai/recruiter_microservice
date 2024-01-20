@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CandidateInfo } from "../database/models/candidateInfo.model";
+import logger from "../configs/logger.config";
 
 export const getOneCandidateController = (req: Request, res: Response) => {
 	(async () => {
@@ -9,11 +10,14 @@ export const getOneCandidateController = (req: Request, res: Response) => {
 			});
 
 			if (candidate == null) {
+				logger.info("Candidatre with that user_id not found");
 				res.status(404).json({ message: "candidatre with that user_id not found" });
 			} else {
+				logger.info("Candidate found");
 				res.status(200).send(candidate);
 			}
 		} catch (error) {
+			logger.error("Unknown error in getOneCandidateController", error);
 			res.status(500).send({ error: "internal server error" });
 		}
 	})();

@@ -17,6 +17,7 @@ const client_sqs_1 = require("@aws-sdk/client-sqs");
 const generate_unique_id_1 = __importDefault(require("generate-unique-id"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const createSQSClient_service_1 = require("./createSQSClient.service");
+const logger_config_1 = __importDefault(require("../configs/logger.config"));
 dotenv_1.default.config();
 class SQSService {
     sendMessageToQueue(emailPayload) {
@@ -41,9 +42,11 @@ class SQSService {
                     MessageGroupId: "sendEmailResumeTracker",
                     MessageDeduplicationId: (0, generate_unique_id_1.default)(),
                 }));
+                logger_config_1.default.info("Message sent to Emailer SQS queue");
                 return { status: 200, message: "message sent to queue", data: null };
             }
             catch (error) {
+                logger_config_1.default.error("Unknown error in sending message to queue", error);
                 throw new Error("error in sendMessageToQueue");
             }
         });

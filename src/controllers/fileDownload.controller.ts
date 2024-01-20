@@ -3,6 +3,7 @@ import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
 import { SQSService } from "../services/sqs.service";
 import { FindUser } from "../services/findUserFromS3Key.service";
 import { EmailPayload } from "../interfaces/emailPayload.interface";
+import logger from "../configs/logger.config";
 export const fileDownloadController = (req: Request, res: Response) => {
 	(async () => {
 		const key = req.body.key;
@@ -20,10 +21,11 @@ export const fileDownloadController = (req: Request, res: Response) => {
 				text: "Dear candidate your CV was downloaded",
 			};
 			await new SQSService().sendMessageToQueue(emailPayload);
-
+			logger.info("File downloaded");
 			res.setHeader("Content-Disposition", `attachment; filename=${key}.pdf`);
 			res.status(downloadFileResponse.status).send({ url: downloadFileResponse.data });
 		} catch (error) {
+			logger.error("Unknown error in fileDownloadController", error);
 			res.status(500).send({ error: "internal server error" });
 		}
 	})();

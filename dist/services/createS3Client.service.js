@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createS3Client = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const dotenv_1 = __importDefault(require("dotenv"));
+const logger_config_1 = __importDefault(require("../configs/logger.config"));
 dotenv_1.default.config();
 function createS3Client() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,6 +27,7 @@ function createS3Client() {
                 },
                 region: process.env.AWS_REGION,
             });
+            logger_config_1.default.info("S3 Client created");
             return {
                 status: 200,
                 message: "S3 Client created",
@@ -33,6 +35,7 @@ function createS3Client() {
             };
         }
         else {
+            logger_config_1.default.error("Unknown error in creating S3 client");
             throw new Error("error in createS3Client");
         }
     });

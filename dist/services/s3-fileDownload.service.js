@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadFileFromS3 = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 const dotenv_1 = require("dotenv");
 const createS3Client_service_1 = require("./createS3Client.service");
+const logger_config_1 = __importDefault(require("../configs/logger.config"));
 (0, dotenv_1.config)();
 function downloadFileFromS3(key) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,9 +30,11 @@ function downloadFileFromS3(key) {
             }), {
                 expiresIn: 60,
             });
+            logger_config_1.default.info("Url downloaded");
             return { status: 200, message: "url downloaded", data: imageUrl };
         }
         catch (err) {
+            logger_config_1.default.error("Unknown error in downloading file from s3", err);
             throw new Error("error in downloadFileFromS3");
         }
     });

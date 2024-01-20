@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createSQSClient = void 0;
 const client_sqs_1 = require("@aws-sdk/client-sqs");
 const dotenv_1 = __importDefault(require("dotenv"));
+const logger_config_1 = __importDefault(require("../configs/logger.config"));
 dotenv_1.default.config();
 function createSQSClient() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,6 +27,7 @@ function createSQSClient() {
                 },
                 region: process.env.AWS_REGION,
             });
+            logger_config_1.default.info("SQS Client created");
             return {
                 status: 200,
                 message: "SQSClient created",
@@ -33,6 +35,7 @@ function createSQSClient() {
             };
         }
         else {
+            logger_config_1.default.error("Unknown error in creating SQS client");
             throw new Error("error in createSQSClient");
         }
     });
