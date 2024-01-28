@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getAllcandidateController } from "../controllers/getAllcandidate.controller"; // Adjust the import path
-import { CandidateInfo } from "../database/models/candidateInfo.model"; // Adjust the import path
+import { CandidateInfo } from "../models/candidateInfo.model"; // Adjust the import path
 
-jest.mock("../database/models/candidateInfo.model"); // Mock CandidateInfo model
+jest.mock("../models/candidateInfo.model"); // Mock CandidateInfo model
 
 describe("getAllcandidateController", () => {
 	let mockRequest: any;

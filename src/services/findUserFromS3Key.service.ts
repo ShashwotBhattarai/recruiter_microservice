@@ -1,4 +1,4 @@
-import { CandidateInfo } from "../database/models/candidateInfo.model";
+import { CandidateInfo } from "../models/candidateInfo.model";
 
 export class FindUser {
 	async findUser(key: string) {

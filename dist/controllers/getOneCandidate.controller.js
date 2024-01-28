@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOneCandidateController = void 0;
-const candidateInfo_model_1 = require("../database/models/candidateInfo.model");
+const candidateInfo_model_1 = require("../models/candidateInfo.model");
 const logger_config_1 = __importDefault(require("../configs/logger.config"));
 const getOneCandidateController = (req, res) => {
     (() => __awaiter(void 0, void 0, void 0, function* () {

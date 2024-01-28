@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const findUserFromS3Key_service_1 = require("../services/findUserFromS3Key.service"); // Adjust the import path as needed
-const candidateInfo_model_1 = require("../database/models/candidateInfo.model");
-jest.mock("../database/models/candidateInfo.model"); // Mock the CandidateInfo model
+const candidateInfo_model_1 = require("../models/candidateInfo.model");
+jest.mock("../models/candidateInfo.model"); // Mock the CandidateInfo model
 describe("FindUser", () => {
     let findUser;
     beforeEach(() => {

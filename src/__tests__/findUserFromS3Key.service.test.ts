@@ -1,7 +1,7 @@
 import { FindUser } from "../services/findUserFromS3Key.service"; // Adjust the import path as needed
-import { CandidateInfo } from "../database/models/candidateInfo.model";
+import { CandidateInfo } from "../models/candidateInfo.model";
 
-jest.mock("../database/models/candidateInfo.model"); // Mock the CandidateInfo model
+jest.mock("../models/candidateInfo.model"); // Mock the CandidateInfo model
 
 describe("FindUser", () => {
 	let findUser: InstanceType<typeof FindUser>;

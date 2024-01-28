@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FindUser = void 0;
-const candidateInfo_model_1 = require("../database/models/candidateInfo.model");
+const candidateInfo_model_1 = require("../models/candidateInfo.model");
 class FindUser {
     findUser(key) {
         return __awaiter(this, void 0, void 0, function* () {

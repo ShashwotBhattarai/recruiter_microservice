@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getOneCandidateController } from "../controllers/getOneCandidate.controller";
-import { CandidateInfo } from "../database/models/candidateInfo.model";
+import { CandidateInfo } from "../models/candidateInfo.model";
 
-jest.mock("../database/models/candidateInfo.model");
+jest.mock("../models/candidateInfo.model");
 
 describe("getOneCandidateController", () => {
 	let mockRequest: any;

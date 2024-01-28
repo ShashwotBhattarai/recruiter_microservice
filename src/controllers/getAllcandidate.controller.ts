@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { CandidateInfo } from "../database/models/candidateInfo.model";
+import { CandidateInfo } from "../models/candidateInfo.model";
 import logger from "../configs/logger.config";
 
 export const getAllcandidateController = (req: Request, res: Response) => {

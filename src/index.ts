@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import fileDownloadRoute from "./routes/fileDownload.route";
-import connectToDatabase from "./database/db.connect";
+import connectToDatabase from "./configs/db.config";
 import getCandidateInfoRoute from "./routes/getCandidateInfo.route";
 import swaggerUi from "swagger-ui-express";
 import swaggerFile from "../swagger-output.json";

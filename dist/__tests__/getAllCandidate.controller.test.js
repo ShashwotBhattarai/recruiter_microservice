@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const getAllcandidate_controller_1 = require("../controllers/getAllcandidate.controller"); // Adjust the import path
-const candidateInfo_model_1 = require("../database/models/candidateInfo.model"); // Adjust the import path
-jest.mock("../database/models/candidateInfo.model"); // Mock CandidateInfo model
+const candidateInfo_model_1 = require("../models/candidateInfo.model"); // Adjust the import path
+jest.mock("../models/candidateInfo.model"); // Mock CandidateInfo model
 describe("getAllcandidateController", () => {
     let mockRequest;
     let mockResponse;
