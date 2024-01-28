@@ -1,12 +1,11 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import fileDownloadRoute from "./routes/fileDownload.route";
 import connectToDatabase from "./configs/db.config";
-import getCandidateInfoRoute from "./routes/getCandidateInfo.route";
 import swaggerUi from "swagger-ui-express";
 import swaggerFile from "../swagger-output.json";
 import logger from "./configs/logger.config";
+import rootRoute from "./routes/root.route";
 
 const app = express();
 app.disable("x-powered-by");
@@ -19,8 +18,7 @@ app.use(bodyParser.json());
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 connectToDatabase();
 
-app.use("/recruiter/download", fileDownloadRoute);
-app.use("/recruiter/getCandidateInfo", getCandidateInfoRoute);
+app.use("/", rootRoute);
 
 app.listen(port, () => {
 	logger.info(`Recruiter Microservice Running at port ${port}`);
