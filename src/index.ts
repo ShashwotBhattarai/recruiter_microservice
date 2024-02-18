@@ -13,7 +13,7 @@ const corsOptions = {
 	origin: "http://localhost:3000",
 };
 app.use(cors(corsOptions));
-const port = 3002;
+const port = process.env.PORT
 app.use(bodyParser.json());
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 connectToDatabase();
@@ -22,5 +22,5 @@ app.use("/", rootRoute);
 
 app.listen(port, () => {
 	logger.info(`Recruiter Microservice Running at port ${port}`);
-	logger.info(`API documentation: http://localhost:3002/doc`);
+	logger.info(`API documentation: http://localhost:${port}/doc`);
 });
