@@ -5,8 +5,8 @@ COPY package*.json ./
 
 RUN npm install --ignore-scripts
 
-# RUN addgroup --system nonroot && adduser --system --group nonroot
-# USER nonroot
+RUN addgroup --system nonroot && adduser --system --group nonroot
+USER nonroot
 
 COPY ./dist /usr/src/app/dist
 COPY ./swagger-output.json /usr/src/app/swagger-output.json
