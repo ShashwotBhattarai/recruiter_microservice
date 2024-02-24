@@ -7,9 +7,7 @@
   },
   "host": "localhost:3002",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/recruiter/download/": {
       "post": {

@@ -7,6 +7,10 @@ const router: Router = express.Router();
 
 router.get("/all", authMiddleware(["recruiter"]), getAllcandidateController);
 
-router.get("/:user_id", authMiddleware(["recruiter"]), getOneCandidateController);
+router.get(
+  "/:user_id",
+  authMiddleware(["recruiter"]),
+  getOneCandidateController,
+);
 
 export default router;
