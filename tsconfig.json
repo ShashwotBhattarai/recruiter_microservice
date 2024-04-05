@@ -11,8 +11,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"],
-  "paths": {
-    "crypto": ["node_modules/crypto-browserify"] //TODO: wtf is this crypto browsify
-  }
+  "exclude": ["node_modules", "dist"]
 }
