@@ -1,4 +1,4 @@
-import { downloadFileFromS3 } from "../services/s3-fileDownload.service";
+import S3Service from "./s3.service";
 import { S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 jest.mock("@aws-sdk/s3-request-presigner", () => ({
@@ -9,22 +9,22 @@ describe("downloadFileFromS3", () => {
     jest.clearAllMocks();
   });
 
-  test("should return a signed url", async () => {
-    const response = await downloadFileFromS3("testKey");
+  it("should return 200 and a signed url", async () => {
+    const response = await new S3Service().getDownloadURLFromS3("testKey");
     expect(getSignedUrl).toHaveBeenCalledWith(
       expect.any(S3Client),
-      expect.anything(), // You can be more specific here if needed
-      { expiresIn: 60 }, // Match this with your actual function's logic
+      expect.anything(),
+      { expiresIn: 60 },
     );
     expect(response.status).toBe(200);
-    expect(response.data).toBe("signedUrl");
+    expect(response.url).toBe("signedUrl");
   });
-  test("should handle errors when generating a signed URL", async () => {
+  it("should throw error in downloadFileFromS3  if getSignedUrl fails", async () => {
     const mockError = new Error("Failed to generate signed URL");
     (getSignedUrl as jest.Mock).mockRejectedValue(mockError);
 
     try {
-      await downloadFileFromS3("testKey");
+      await new S3Service().getDownloadURLFromS3("testKey");
     } catch (error) {
       expect(error).toEqual(new Error("error in downloadFileFromS3"));
     }

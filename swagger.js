@@ -6,8 +6,9 @@ dotenv.config();
 
 const doc = {
   info: {
-    title: "My API",
-    description: "Description",
+    title: "Recruiter Microservice",
+    description: "Recruiter Microservice",
+    version: "0.0.1",
   },
   host: `localhost:${process.env.PORT}`,
 };
@@ -16,3 +17,5 @@ const outputFile = "./swagger-output.json";
 const routes = ["./src/index.ts"];
 
 swaggerAutogen(outputFile, routes, doc);
+
+//

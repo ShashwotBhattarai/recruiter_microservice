@@ -6,7 +6,7 @@ jest.mock("generate-unique-id", () => {
 });
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { mockClient } from "aws-sdk-client-mock";
-import { SQSService } from "../services/sqs.service";
+import SQSService from "./sqs.service";
 
 describe("Sqs service", () => {
   const sqsClientMock = mockClient(SQSClient);
@@ -15,9 +15,7 @@ describe("Sqs service", () => {
     sqsClientMock.reset();
   });
 
-  test("sqs message gets sent to queue", async () => {
-    //mock all dependencies
-
+  it("should retuen 200 and message set to queue when sendMessageToQueue succeeds", async () => {
     sqsClientMock.on(SendMessageCommand).resolves({
       $metadata: {
         httpStatusCode: 200,
@@ -40,11 +38,10 @@ describe("Sqs service", () => {
     const result = await new SQSService().sendMessageToQueue(emailPayload);
 
     expect(result.status).toBe(200);
+    expect(result.message).toBe("message sent to queue");
   });
 
-  test("sqs error occures", async () => {
-    //mock all dependencies
-
+  it("should throw error in sendMessageToQueue when sendMessageToQueue fails", async () => {
     sqsClientMock.on(SendMessageCommand).rejects(new Error("SQS Error"));
     const emailPayload = {
       to: "babudallay@gmail.com",

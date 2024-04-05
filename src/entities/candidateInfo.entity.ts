@@ -15,6 +15,8 @@ const candidateInfoSchema = new Schema(
     local_file_name: { type: String },
     file_size_in_bytes: { type: Number },
     aws_file_key: { type: String },
+    createdBy: { type: String },
+    updatedBy: { type: String },
   },
   { timestamps: true },
 );
