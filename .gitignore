@@ -3,4 +3,3 @@ node_modules
 coverage
 .scannerwork
 dist
-swagger-output.json
