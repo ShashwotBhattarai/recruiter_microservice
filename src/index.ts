@@ -1,26 +1,20 @@
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
 import connectToDatabase from "./configs/db.config";
 import swaggerUi from "swagger-ui-express";
 import swaggerFile from "../swagger-output.json";
 import logger from "./configs/logger.config";
 import rootRoute from "./routes/root.route";
+import app from "./configs/express.config";
+import { envVars } from "./configs/envVars.config";
 
-const app = express();
-app.disable("x-powered-by");
-const corsOptions = {
-	origin: "http://localhost:3000",
-};
-app.use(cors(corsOptions));
-const port = 3002;
-app.use(bodyParser.json());
-app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+const port = envVars.PORT;
+
 connectToDatabase();
 
-app.use("/", rootRoute);
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.use("/recruiter", rootRoute);
 
 app.listen(port, () => {
-	logger.info(`Recruiter Microservice Running at port ${port}`);
-	logger.info(`API documentation: http://localhost:3002/doc`);
+  logger.info(`Recruiter Microservice Running at port ${port}`);
+  logger.info(`API documentation: http://localhost:${port}/doc`);
 });
