@@ -1,9 +1,11 @@
 import S3Service from "./s3.service";
 import { S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 jest.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: jest.fn().mockResolvedValue("signedUrl"),
 }));
+
 describe("downloadFileFromS3", () => {
   beforeEach(() => {
     jest.clearAllMocks();

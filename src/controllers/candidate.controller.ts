@@ -5,7 +5,7 @@ import { ServiceResponse } from "../models/serviceResponse.type";
 import GetDownloadURL from "../services/downloadUrl.service";
 
 export default class CandidateController {
-  public getAllcandidateController(req: Request, res: Response): void {
+  public getAllCandidates(req: Request, res: Response): void {
     (async (): Promise<void> => {
       try {
         const response: ServiceResponse =
@@ -20,7 +20,7 @@ export default class CandidateController {
     })();
   }
 
-  public getOneCandidateController(req: Request, res: Response): void {
+  public getOneCandidate(req: Request, res: Response): void {
     (async (): Promise<void> => {
       try {
         const query = { user_id: req.params.user_id };
@@ -37,7 +37,7 @@ export default class CandidateController {
     })();
   }
 
-  public getDownloadURLController(req: Request, res: Response): void {
+  public getDownloadURL(req: Request, res: Response): void {
     (async (): Promise<void> => {
       try {
         const response: ServiceResponse =

@@ -4,16 +4,18 @@ import CandidateController from "../controllers/candidate.controller";
 
 const protectRoute = new AuthGuardMiddleware().protectRoute;
 
-const getAllCandidateController = new CandidateController()
-  .getAllcandidateController;
+const getAllCandidates = new CandidateController().getAllCandidates;
 
-const getOneCandidateController = new CandidateController()
-  .getOneCandidateController;
+const getOneCandidate = new CandidateController().getOneCandidate;
+
+const getCVDownloadUrl = new CandidateController().getDownloadURL;
 
 const router: Router = express.Router();
 
-router.get("/all", protectRoute(["recruiter"]), getAllCandidateController);
+router.get("/all", protectRoute(["recruiter"]), getAllCandidates);
 
-router.get("/:user_id", protectRoute(["recruiter"]), getOneCandidateController);
+router.get("/:user_id", protectRoute(["recruiter"]), getOneCandidate);
+
+router.get("/cv/:key", protectRoute(["recruiter"]), getCVDownloadUrl);
 
 export default router;

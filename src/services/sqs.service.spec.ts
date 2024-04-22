@@ -31,7 +31,7 @@ describe("Sqs service", () => {
       SequenceNumber: "74222882815101630464",
     });
     const emailPayload = {
-      to: "babudallay@gmail.com",
+      to: "abc.xyz@gmail.com",
       subject: "new user created",
       text: "your user has been created",
     };
@@ -44,7 +44,7 @@ describe("Sqs service", () => {
   it("should throw error in sendMessageToQueue when sendMessageToQueue fails", async () => {
     sqsClientMock.on(SendMessageCommand).rejects(new Error("SQS Error"));
     const emailPayload = {
-      to: "babudallay@gmail.com",
+      to: "abc.xyz@gmail.com",
       subject: "new user created",
       text: "your user has been created",
     };

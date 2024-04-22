@@ -5,6 +5,7 @@ import { EmailPayload } from "../models/emailPayload.type";
 import logger from "../configs/logger.config";
 import { envVars } from "../configs/envVars.config";
 import { ServiceResponse } from "../models/serviceResponse.type";
+import { AWSConstants } from "../constants/aws.constants";
 
 export default class SQSService {
   public async sendMessageToQueue(
@@ -27,7 +28,7 @@ export default class SQSService {
             },
           },
           MessageBody: emailPayload.text,
-          MessageGroupId: "sendEmailResumeTracker",
+          MessageGroupId: AWSConstants.sqsMessageGroupId,
           MessageDeduplicationId: generateUniqueId(),
         }),
       );

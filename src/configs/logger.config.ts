@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from "winston";
 import { envVars } from "./envVars.config";
+
 const env = envVars.ENV;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
