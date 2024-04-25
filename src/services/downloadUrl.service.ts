@@ -12,7 +12,7 @@ export default class DownloadURLService {
       const downloadFileResponse =
         await new S3DownloadService().getDownloadURLFromS3(key);
 
-      const query = { aws_file_key: key };
+      const query = { s3_default_bucket_file_key: key };
 
       const findUserResponse = await new CandidateService().findOneCandidate(
         query,
