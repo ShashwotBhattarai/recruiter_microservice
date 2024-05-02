@@ -76,7 +76,7 @@ This microservice is designed to handle functionalities used by recruiters, such
 
       Download CV API:
 
-         curl --location 'http://localhost:{{PORT}}/recruiter/getCandidateInfo/cv/{{AWS_FILE_KEY}}' \
+         curl --location 'http://localhost:{{PORT}}/recruiter/getCandidateInfo/cv/{{s3_default_bucket_file_key}}' \
          --header 'Authorization: Bearer {{TOKEN}}'
 
    ```

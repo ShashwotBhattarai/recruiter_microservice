@@ -3,20 +3,23 @@ import { CVHasBeenDownloadedEmailTemplate } from "../constants/email.templates";
 import { EmailPayload } from "../models/emailPayload.type";
 import { ServiceResponse } from "../models/serviceResponse.type";
 import CandidateService from "./candidateInfo.service";
-import S3DownloadService from "./s3.service";
+import S3Service from "./s3.service";
 import SQSService from "./sqs.service";
 
 export default class DownloadURLService {
+  private candiateService = new CandidateService();
+  private s3Service = new S3Service();
+  private sqsService = new SQSService();
+
   public async getCVDownloadUrl(key: string): Promise<ServiceResponse> {
     try {
       const downloadFileResponse =
-        await new S3DownloadService().getDownloadURLFromS3(key);
+        await this.s3Service.getDownloadURLFromS3(key);
 
-      const query = { aws_file_key: key };
+      const query = { s3_default_bucket_file_key: key };
 
-      const findUserResponse = await new CandidateService().findOneCandidate(
-        query,
-      );
+      const findUserResponse =
+        await this.candiateService.findOneCandidate(query);
 
       const emailText: string = CVHasBeenDownloadedEmailTemplate.text.replace(
         "{{username}}",
@@ -29,7 +32,7 @@ export default class DownloadURLService {
         text: emailText,
       };
 
-      await new SQSService().sendMessageToQueue(emailPayload);
+      await this.sqsService.sendMessageToQueue(emailPayload);
       logger.info("File downloaded");
 
       return {
