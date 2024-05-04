@@ -1,7 +1,6 @@
 import { EmailerService } from "./emailer.service";
 import { EmailPayload } from "../models/emailPayload.type";
 import SQSService from "./sqs.service";
-import { SendEmailStatusEnum } from "../constants/sendEmailStatus.enum";
 
 jest.mock("../configs/logger.config");
 jest.mock("./sqs.service");
@@ -31,8 +30,7 @@ describe("EmailerService", () => {
   });
 
   describe("sendEmail", () => {
-    it("should responde with status:200 when status is NEW_USER_REGISTERED_SUCCESSFULLY and  message is sent to queue", async () => {
-      const status = SendEmailStatusEnum.CV_GOT_DOWNLOADED;
+    it("should responde with status:200 when message is sent to queue", async () => {
       const subject = "Test Subject";
       const text = "Test Body";
       const email = "test@example.com";
@@ -60,47 +58,12 @@ describe("EmailerService", () => {
       });
 
       const emailerService = new EmailerService();
-      const response = await emailerService.sendEmail(email, username, status);
+      const response = await emailerService.sendEmail(email, username);
 
       expect(response.status).toBe(200);
     });
 
-    it("should responde with status:200 when status is FORGOT_PASSWORD and  message is sent to queue", async () => {
-      const status = SendEmailStatusEnum.CV_GOT_DOWNLOADED;
-      const subject = "Test Subject";
-      const text = "Test Body";
-      const email = "test@example.com";
-      const username = "tesUSername";
-
-      const emailPayload: EmailPayload = {
-        to: email,
-        subject: subject,
-        text: text,
-      };
-
-      const constructEmailPayloadSpy = jest.spyOn(
-        EmailerService.prototype,
-        "constructEmailPayload",
-      );
-      constructEmailPayloadSpy.mockResolvedValue(emailPayload);
-
-      const sendMessageToQueueSpy = jest.spyOn(
-        SQSService.prototype,
-        "sendMessageToQueue",
-      );
-      sendMessageToQueueSpy.mockResolvedValue({
-        status: 200,
-        message: "message sent to sqs queue",
-      });
-
-      const emailerService = new EmailerService();
-      const response = await emailerService.sendEmail(email, username, status);
-
-      expect(response.status).toBe(200);
-    });
-
-    it("should responde with status:500 when any error occures", async () => {
-      const status = SendEmailStatusEnum.CV_GOT_DOWNLOADED;
+    it("should respond with error:Error in sendEmail, when any error occures", async () => {
       const subject = "Test Subject";
       const text = "Test Body";
       const email = "test@example.com";
@@ -128,7 +91,7 @@ describe("EmailerService", () => {
 
       const emailerService = new EmailerService();
       try {
-        await emailerService.sendEmail(email, username, status);
+        await emailerService.sendEmail(email, username);
       } catch (error) {
         expect(error).toEqual(new Error("Error in sendEmail"));
       }

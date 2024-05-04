@@ -1,5 +1,4 @@
 import logger from "../configs/logger.config";
-import { SendEmailStatusEnum } from "../constants/sendEmailStatus.enum";
 import { CandidateInfo } from "../entities/candidateInfo.entity";
 import { ServiceResponse } from "../models/serviceResponse.type";
 import { EmailerService } from "./emailer.service";
@@ -66,9 +65,8 @@ export default class CandidateService {
 
       const email = findUserResponse.data.email;
       const username = findUserResponse.data.fullname;
-      const status = SendEmailStatusEnum.CV_GOT_DOWNLOADED;
 
-      await this.emailerService.sendEmail(email, username, status);
+      await this.emailerService.sendEmail(email, username);
       logger.info("Signed Url downloaded downloaded");
 
       return {
