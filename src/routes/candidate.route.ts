@@ -10,7 +10,7 @@ const getAllCandidates =
 const getOneCandidate =
   candidateController.getOneCandidate.bind(candidateController);
 const getCVDownloadUrl =
-  candidateController.getDownloadURL.bind(candidateController);
+  candidateController.getCVDownloadURL.bind(candidateController);
 
 const router: Router = express.Router();
 

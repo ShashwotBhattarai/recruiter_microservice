@@ -1,8 +1,14 @@
 import logger from "../configs/logger.config";
+import { SendEmailStatusEnum } from "../constants/sendEmailStatus.enum";
 import { CandidateInfo } from "../entities/candidateInfo.entity";
 import { ServiceResponse } from "../models/serviceResponse.type";
+import { EmailerService } from "./emailer.service";
+import S3Service from "./s3.service";
 
 export default class CandidateService {
+  private s3Service = new S3Service();
+  private emailerService = new EmailerService();
+
   public async findOneCandidate(query: object): Promise<ServiceResponse> {
     try {
       const res = await CandidateInfo.findOne(query);
@@ -46,6 +52,33 @@ export default class CandidateService {
     } catch (error) {
       logger.error("Unknown error in findAllCandidate", error);
       throw new Error("Unknown error in findAllCandidate");
+    }
+  }
+
+  public async getCVDownloadUrl(key: string): Promise<ServiceResponse> {
+    try {
+      const downloadFileResponse =
+        await this.s3Service.getDownloadURLFromS3(key);
+
+      const query = { s3_default_bucket_file_key: key };
+
+      const findUserResponse = await this.findOneCandidate(query);
+
+      const email = findUserResponse.data.email;
+      const username = findUserResponse.data.fullname;
+      const status = SendEmailStatusEnum.CV_GOT_DOWNLOADED;
+
+      await this.emailerService.sendEmail(email, username, status);
+      logger.info("Signed Url downloaded downloaded");
+
+      return {
+        status: 200,
+        message: "Signed Url Downloaded",
+        url: downloadFileResponse.url,
+      };
+    } catch (error) {
+      logger.error("Error in Download URL download", error);
+      throw new Error("Unknown error in Download URL download");
     }
   }
 }

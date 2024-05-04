@@ -2,14 +2,15 @@ import { Request, Response } from "express";
 import logger from "../configs/logger.config";
 import CandidateService from "../services/candidateInfo.service";
 import { ServiceResponse } from "../models/serviceResponse.type";
-import GetDownloadURL from "../services/downloadUrl.service";
 
 export default class CandidateController {
+  private candidateService = new CandidateService();
+
   public getAllCandidates(req: Request, res: Response): void {
     (async (): Promise<void> => {
       try {
         const response: ServiceResponse =
-          await new CandidateService().findAllCandidates();
+          await this.candidateService.findAllCandidates();
         res
           .status(response.status)
           .json({ message: response.message, candidates: response.data });
@@ -25,7 +26,7 @@ export default class CandidateController {
       try {
         const query = { user_id: req.params.user_id };
         const response: ServiceResponse =
-          await new CandidateService().findOneCandidate(query);
+          await this.candidateService.findOneCandidate(query);
 
         res
           .status(response.status)
@@ -37,11 +38,11 @@ export default class CandidateController {
     })();
   }
 
-  public getDownloadURL(req: Request, res: Response): void {
+  public getCVDownloadURL(req: Request, res: Response): void {
     (async (): Promise<void> => {
       try {
         const response: ServiceResponse =
-          await new GetDownloadURL().getCVDownloadUrl(req.params.key);
+          await this.candidateService.getCVDownloadUrl(req.params.key);
 
         res
           .status(response.status)
