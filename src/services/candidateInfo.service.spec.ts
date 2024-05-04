@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CandidateService from "./candidateInfo.service";
 import { CandidateInfo } from "../entities/candidateInfo.entity";
+import S3Service from "./s3.service";
+import SQSService from "./sqs.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mockingoose = require("mockingoose");
+jest.mock("./s3.service");
+jest.mock("./sqs.service");
 
 jest.mock("../configs/logger.config");
 
@@ -96,6 +101,53 @@ describe("CandidateService", () => {
 
       await expect(service.findAllCandidates()).rejects.toEqual(
         new Error("Unknown error in findAllCandidate"),
+      );
+    });
+  });
+
+  describe("getCVDownloadUrl", () => {
+    it("should return 200, download URL and call sendMessageToQueue method", async () => {
+      const key = "exampleKey";
+      const downloadUrl = "https://example.com/download";
+      const findUserResponse = {
+        status: 200,
+        message: "user found",
+        data: {
+          fullname: "John Doe",
+          email: "john@example.com",
+        },
+      };
+
+      (S3Service.prototype as any).getDownloadURLFromS3.mockResolvedValueOnce({
+        url: downloadUrl,
+      });
+
+      const findOneCandidateSpy = jest.spyOn(
+        CandidateService.prototype,
+        "findOneCandidate",
+      );
+      findOneCandidateSpy.mockResolvedValue(findUserResponse);
+
+      (SQSService.prototype as any).sendMessageToQueue.mockResolvedValueOnce();
+
+      const service = new CandidateService();
+      const response = await service.getCVDownloadUrl(key);
+
+      expect(response.status).toBe(200);
+      expect(response.url).toBe(downloadUrl);
+    });
+
+    it("should throw an error Unknown error in Download URL download if any step fails in try block", async () => {
+      const key = "exampleKey";
+
+      (S3Service.prototype as any).getDownloadURLFromS3.mockRejectedValueOnce(
+        new Error("S3 download error"),
+      );
+
+      const service = new CandidateService();
+
+      await expect(service.getCVDownloadUrl(key)).rejects.toEqual(
+        new Error("Unknown error in Download URL download"),
       );
     });
   });
